@@ -53,5 +53,14 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
 
 1. Clonez le dépôt :
    ```bash
-   git clone <URL_DU_DEPOT>
-   cd recette-api
+   git clone https://github.com/Fatoumacisse99/APIGestion_Recettes.git
+   ```
+   ```
+   cd APIGestion_Recettes
+   ````
+   ```bash
+   npm install
+   
+## Autheur
+[Fatima cissé](https://github.com/Fatoumacisse99) 
+ et [Abdarahmane Demba](https://github.com/Abdarahmane)
