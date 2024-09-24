@@ -54,7 +54,7 @@ describe("Recipe tests", () => {
   it("can be created", async () => {
     const recipe = { titre: "crepe", type: "dessert", ingredients: "farine" };
     const result = await Recipe.createRecipe(recipe.titre, recipe.type, recipe.ingredients);
-    recipeId = result.id; // Assurez-vous que la méthode `createRecipe` retourne un objet avec un `id`.
+    recipeId = result.id;
     const recipeCreated = await Recipe.getRecipeById(recipeId);
     expect(recipeId).not.toBeNull();
     expect(recipeCreated).not.toBeNull();
@@ -66,7 +66,7 @@ describe("Recipe tests", () => {
       const recipe = { titre: null, type: "dessert", ingredients: "farine" };
       await Recipe.createRecipe(recipe.titre, recipe.type, recipe.ingredients);
     } catch (error) {
-      expect(error).toBeDefined(); // Vérifiez que l'erreur est définie.
+      expect(error).toBeDefined();
     }
   });
 

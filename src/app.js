@@ -1,6 +1,8 @@
-const express = require('express');
-const app = express();
-const recipeRoutes = require('./routes/recipeRoutes');
+/* eslint-disable */
+import express from 'express'; // Correct import syntax without parentheses
+import recipeRoutes from './routes/recipeRoutes.js'; // Correct import syntax, including .js for ES modules
+
+const app = express(); // Correct initialization of 'app'
 
 app.use(express.json());
 
