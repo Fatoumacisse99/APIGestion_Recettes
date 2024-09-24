@@ -54,7 +54,7 @@ const createRecipe = async (req, res) => {
     const newRecipe = await RecipeModel.createRecipe(req.body);
     return res.status(201).json(newRecipe);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Erreur lors de la création de la recette: " + err.message });
   }
 };
 
@@ -64,7 +64,7 @@ const getAllRecipes = async (req, res) => {
     const recipes = await RecipeModel.getAllRecipes();
     return res.status(200).json(recipes);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Erreur lors de la récupération des recettes: " + err.message });
   }
 };
 
@@ -78,7 +78,7 @@ const getRecipeById = async (req, res) => {
     }
     return res.status(200).json(recipe);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Erreur lors de la récupération de la recette: " + err.message });
   }
 };
 
@@ -86,10 +86,15 @@ const getRecipeById = async (req, res) => {
 const updateRecipe = async (req, res) => {
   const { id } = req.params;
   try {
+    const existingRecipe = await RecipeModel.getRecipeById(id);
+    if (!existingRecipe) {
+      return res.status(404).json({ message: "Recette non trouvée." });
+    }
+
     const updatedRecipe = await RecipeModel.updateRecipe(id, req.body);
     return res.status(200).json(updatedRecipe);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Erreur lors de la mise à jour de la recette: " + err.message });
   }
 };
 
@@ -97,10 +102,15 @@ const updateRecipe = async (req, res) => {
 const deleteRecipe = async (req, res) => {
   const { id } = req.params;
   try {
+    const existingRecipe = await RecipeModel.getRecipeById(id);
+    if (!existingRecipe) {
+      return res.status(404).json({ message: "Recette non trouvée." });
+    }
+
     await RecipeModel.deleteRecipe(id);
     return res.status(204).send(); // No content
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Erreur lors de la suppression de la recette: " + err.message });
   }
 };
 

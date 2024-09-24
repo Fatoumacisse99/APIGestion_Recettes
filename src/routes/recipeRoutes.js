@@ -38,3 +38,4 @@ router.put('/recipes/:id', validateUpdateRecipe(), validate, recipeController.up
 router.delete('/recipes/:id', validateDeleteRecipe(), validate, recipeController.deleteRecipe);
 
 module.exports = router;
+

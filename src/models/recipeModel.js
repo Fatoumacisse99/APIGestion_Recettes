@@ -93,20 +93,10 @@ const updateRecipe = async (id, recipeData) => {
 };
 
 // Supprimer une recette
-// const deleteRecipe = async (id) => {
-//   const query = 'DELETE FROM recipes WHERE id = ?';
-//   await db.query(query, [id]);
-// };
-const deleteRecipe = async (req, res) => {
-  try {
-    const result = await RecipeModel.deleteRecipe(req.params.id);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Recette non trouvée." });
-    }
-    return res.status(204).send(); // No Content
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
+const deleteRecipe = async (id) => {
+  const query = 'DELETE FROM recipes WHERE id = ?';
+  const [result] = await db.query(query, [id]);
+  return result; // Retourne le résultat de la requête
 };
 
 module.exports = {
