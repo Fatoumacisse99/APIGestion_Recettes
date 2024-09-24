@@ -1,6 +1,5 @@
-const { check, param, validationResult } = require('express-validator');
-const RecipeModel = require('../models/recipeModel'); 
-
+import { check, param, validationResult } from 'express-validator';
+// import Recipe from '../models/Recipe.js';
 // Validation pour la création d'une recette
 const validateCreateRecipe = () => {
   return [
@@ -66,7 +65,7 @@ const validate = (req, res, next) => {
 };
 
 // Exportation des fonctions
-module.exports = {
+export default {
   validateCreateRecipe,
   validateUpdateRecipe,
   validateDeleteRecipe,

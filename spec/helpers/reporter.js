@@ -1,1 +1,9 @@
-import { DisplayProcessor, SpecReporter, StacktraceOption } from "jasmine-spec-reporter";
+/* global jasmine */
+import { SpecReporter } from 'jasmine-spec-reporter';
+
+jasmine.getEnv().clearReporters();
+jasmine.getEnv().addReporter(new SpecReporter({
+  spec: {
+    displayStacktrace: 'pretty'
+  }
+}));
