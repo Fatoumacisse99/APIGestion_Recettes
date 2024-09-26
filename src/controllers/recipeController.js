@@ -1,7 +1,7 @@
-import RecipeModel from '../models/Recipe.js'; // Use .js extension for ES modules
+// recipeController.js
+import RecipeModel from '../models/Recipe.js';
 
-// Créer une nouvelle recette
-export const createRecipe = async (req, res) => {
+export const createRecipe = async (req, res, ) => {
   try {
     const existingRecipe = await RecipeModel.getRecipeByTitle(req.body.titre);
     if (existingRecipe) {

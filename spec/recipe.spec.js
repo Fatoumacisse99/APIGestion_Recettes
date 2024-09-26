@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-import RecipeModel from '../src/models/Recipe.js'; // Assuming Recipe.js exports the model
-import db from '../src/config/db.js'; // Ensure db.js exports the db connection
+import RecipeModel from '../src/models/Recipe.js';
+import db from '../src/config/db.js';
 
 describe('Recipe Model with Real Database', () => {
   
@@ -73,4 +73,4 @@ describe('Recipe Model with Real Database', () => {
     const recipe = await RecipeModel.deleteRecipe(1);
     expect(recipe).not.toBeNull();
   });
-});
+});  

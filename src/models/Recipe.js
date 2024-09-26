@@ -1,6 +1,5 @@
-import db from '../config/db.js'; // Assurez-vous que le chemin est correct
+import db from '../config/db.js';
 
-// Obtenir une recette par titre
 const getRecipeByTitle = async (titre) => {
   const query = 'SELECT * FROM recipes WHERE titre = ?';
   const [rows] = await db.query(query, [titre]);
