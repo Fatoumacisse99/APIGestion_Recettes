@@ -1,0 +1,11 @@
+version: '3.8'  # Version de Docker Compose
+
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"  # Mapping du port
+    volumes:
+      - .:/usr/src/app  # Monte le répertoire local dans le conteneur
+    environment:
+      - NODE_ENV=production  # Définir l'environnement 
