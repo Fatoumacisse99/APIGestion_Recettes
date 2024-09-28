@@ -1,42 +1,36 @@
-import { check, param, validationResult } from 'express-validator';
+import { check, param, validationResult } from "express-validator";
 
 const validateCreateRecipe = () => {
   return [
-    check('titre')
+    check("titre")
       .not()
       .isEmpty()
       .withMessage("Le titre ne peut pas être vide!")
       .bail()
       .isLength({ min: 6 })
       .withMessage("Minimum 6 caractères requis!"),
-    check('ingredients')
+    check("ingredients")
       .not()
       .isEmpty()
       .withMessage("Les ingrédients ne peuvent pas être vides!"),
-    check('type')
-      .not()
-      .isEmpty()
-      .withMessage("Le type ne peut pas être vide!"),
+    check("type").not().isEmpty().withMessage("Le type ne peut pas être vide!"),
   ];
 };
 
 // Validation pour la mise à jour d'une recette
 const validateUpdateRecipe = () => {
   return [
-    param('id')
-      .not()
-      .isEmpty()
-      .withMessage("L'ID est requis!"),
-    check('titre')
+    param("id").not().isEmpty().withMessage("L'ID est requis!"),
+    check("titre")
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .isLength({ min: 6 })
       .withMessage("Minimum 6 caractères requis pour le titre!"),
-    check('ingredients')
+    check("ingredients")
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .not()
       .isEmpty()
       .withMessage("Les ingrédients ne peuvent pas être vides!"),
-    check('type')
+    check("type")
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .not()
       .isEmpty()
@@ -47,7 +41,7 @@ const validateUpdateRecipe = () => {
 // Validation pour la suppression d'une recette
 const validateDeleteRecipe = () => {
   return [
-    param('id')
+    param("id")
       .not()
       .isEmpty()
       .withMessage("L'ID est requis pour supprimer une recette!"),
@@ -68,5 +62,5 @@ export {
   validateCreateRecipe,
   validateUpdateRecipe,
   validateDeleteRecipe,
-  validate
+  validate,
 };

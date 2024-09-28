@@ -1,11 +1,28 @@
-version: '3.8'  # Version de Docker Compose
+version: "3.8" # Version de Docker Compose
 
 services:
-  api:
+  app:
     build: .
+    image: gestion-api
+    container_name: recette-api
     ports:
-      - "3000:3000"  # Mapping du port
+      - "3000:3000"
     volumes:
-      - .:/usr/src/app  # Monte le répertoire local dans le conteneur
+      - .:/usr/index
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    container_name: mysql
     environment:
-      - NODE_ENV=production  # Définir l'environnement 
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3308:3306"
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
