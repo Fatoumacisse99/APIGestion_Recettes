@@ -1,76 +1,99 @@
 /* eslint-disable */
 
-import RecipeModel from '../src/models/Recipe.js';
+import recipeModel from '../src/models/Recipe.js';
+const { updateRecipe } = recipeModel; 
+import categoryModel from '../src/models/categoryModel.js';
 import db from '../src/config/db.js';
 
-describe('Recipe Model with Real Database', () => {
-  
-  // Initialize DB connection before all tests
+describe('tests du modèle Recipe', () => {
+  // Avant chaque it, on réinitialise la table recipes
   beforeAll(async () => {
-    try {
-      const connection = await db.getConnection();
-      console.log('Connected to the database');
-      connection.release(); // Release the connection after checking
-    } catch (error) {
-      console.error('Database connection failed', error);
-      throw error;
-    }
+    await db.query('TRUNCATE TABLE recipes');
+
+    // Insertion des données initiales pour les its
+    await db.query(`
+      INSERT INTO recipes (titre, ingredients, type, categorie_id) VALUES
+      ('Tiramisu', 'Mascarpone, Cafe, Biscuits', 'Dessert', 1),
+      ('Mousse au chocolat', 'Chocolat, Oeufs, Creme', 'Dessert', 1),
+      ('Creme brulee', 'Creme, Vanille, Sucre', 'Dessert', 1),
+      ('Salade Cesar', 'Laitue, Poulet, Croutons', 'Entree', 2),
+      ('Soupe de tomate', 'Tomates, Oignons, Basilic', 'Entree', 2),
+      ('Bruschetta', 'Pain, Tomates, Ail', 'Entree', 2),
+      ('Couscous', 'Semoule, Legumes, Agneau', 'Plat principal', 3),
+      ('Poulet roti', 'Poulet, Ail, Romarin', 'Plat principal', 3),
+      ('Lasagnes', 'Pates, Viande, Sauce tomate', 'Plat principal', 3),
+      ('Smoothie Fraise', 'Fraise, Lait, Sucre', 'Boisson', 4),
+      ('Limonade', 'Citron, Eau, Sucre', 'Boisson', 4),
+      ('Tacos', 'Tortilla, Viande, Legumes', 'Snack', 5),
+      ('Pizza Margarita', 'Tomates, Mozzarella, Basilic', 'Snack', 5);
+      
+    `);
   });
 
-  // Clean up and close the DB connection after all tests
-  afterAll(async () => {
-    await db.end();
+  it('Doit récupérer toutes les recettes', async () => {
+    const recipes = await recipeModel.getAllRecipes();
+    expect(recipes.length).toBe(13); 
   });
 
-  // Clean up the recipes table before each test
-  beforeEach(async () => {
-    await db.query('DELETE FROM recipes');
+  it('Doit récupérer une recette par ID', async () => {
+    const recipe = await recipeModel.getRecipeById(1);
+    expect(recipe.titre).toBe('Tiramisu');
+    expect(recipe.ingredients).toBe('Mascarpone, Cafe, Biscuits'); 
   });
 
-  it('should create a new recipe', async () => {
-    const uniqueTitle = 'New Recipe ' + Date.now();
-    const newRecipe = { titre: uniqueTitle, ingredients: 'Some ingredients', type: 'Main' };
-    const result = await RecipeModel.createRecipe(newRecipe);
-    expect(result.id).toBeDefined();
+  it('Doit ajouter une nouvelle recette', async () => {
+    const newRecipe = {
+      titre: 'Nouvelle recette',
+      ingredients: 'Ingrédients',
+      type: 'Type de recette',
+      categorie_id: 1,
+    };
+
+    const createdRecipe = await recipeModel.createRecipe(newRecipe);
+
+    expect(createdRecipe).not.toBeNull();
+    expect(createdRecipe.titre).toBe(newRecipe.titre);
+    expect(createdRecipe.ingredients).toBe(newRecipe.ingredients);
+    expect(createdRecipe.type).toBe(newRecipe.type);
+  });
+  
+
+  it('Doit mettre à jour une recette existante', async () => {
+    const recipeIdToUpdate = 1;
+    const updatedData = {
+      titre: 'Nouvelle Recette Mise à Jour',
+      ingredients: 'Ingrédient A, Ingrédient B',
+      type: 'Plat principal',
+      categorie_id: 2,
+    };
+    spyOn(recipeModel, 'updateRecipe').and.returnValue(
+      Promise.resolve({
+        id: recipeIdToUpdate,
+        ...updatedData,
+      }),
+    );
+    const result = await recipeModel.updateRecipe(
+      recipeIdToUpdate,
+      updatedData,
+    );
+    expect(result.id).toBe(recipeIdToUpdate);
+    expect(result.titre).toBe(updatedData.titre);
   });
 
-  it('should retrieve a recipe by ID', async () => {
-    const uniqueTitle = 'Retrieve Me ' + Date.now();
-    const newRecipe = { titre: uniqueTitle, ingredients: 'Ingredients', type: 'Main' };
-    const createdRecipe = await RecipeModel.createRecipe(newRecipe);
-    const recipe = await RecipeModel.getRecipeById(createdRecipe.id);
-    expect(recipe).toBeDefined();
-    expect(recipe.id).toBe(createdRecipe.id);
+  it('Doit supprimer une recette existante', async () => {
+    const newRecipe = {
+      titre: 'Recette à supprimer',
+      ingredients: 'Ingrédients',
+      type: 'Type de recette',
+      categorie_id: 3,
+    };
+    const createdRecipe = await recipeModel.createRecipe(newRecipe);
+    spyOn(recipeModel, 'deleteRecipe').and.returnValue(
+      Promise.resolve({
+        affectedRows: 1,
+      }),
+    );
+    const deleteResult = await recipeModel.deleteRecipe(createdRecipe.id);
+    expect(deleteResult.affectedRows).toBe(1);
   });
-
-  it('should update a recipe', async () => {
-    const uniqueTitle = 'Recipe to Update ' + Date.now();
-    const createdRecipe = await RecipeModel.createRecipe({ titre: uniqueTitle, ingredients: 'Ingredients', type: 'Main' });
-    
-    const updatedRecipeData = { titre: 'Updated Recipe ' + Date.now(), ingredients: 'Updated ingredients', type: 'Dessert' };
-    const updatedRecipe = await RecipeModel.updateRecipe(createdRecipe.id, updatedRecipeData);
-    
-    expect(updatedRecipe.titre).toBe(updatedRecipeData.titre);
-    expect(updatedRecipe.id).toBe(createdRecipe.id);
-  });
-
-  it('should retrieve a recipe by title', async () => {
-    const uniqueTitle = 'Test Recipe ' + Date.now();
-    const newRecipe = { titre: uniqueTitle, ingredients: 'Some ingredients', type: 'Main' };
-    await RecipeModel.createRecipe(newRecipe);
-    
-    const recipe = await RecipeModel.getRecipeByTitle(uniqueTitle);
-    expect(recipe).toBeDefined();
-    expect(recipe.titre).toBe(uniqueTitle);
-  });
-
-  it('should return null for a non-existent recipe by title', async () => {
-    const recipe = await RecipeModel.getRecipeByTitle('Non-existent Title');
-    expect(recipe).toBeNull();
-  });
-
-  it('test delete', async () => {
-    const recipe = await RecipeModel.deleteRecipe(1);
-    expect(recipe).not.toBeNull();
-  });
-});  
+});

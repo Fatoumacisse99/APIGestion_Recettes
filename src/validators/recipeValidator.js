@@ -1,47 +1,41 @@
+// recipeValidator.js
 import { check, param, validationResult } from 'express-validator';
-// import Recipe from '../models/Recipe.js';
 // Validation pour la création d'une recette
 const validateCreateRecipe = () => {
   return [
     check('titre')
       .not()
       .isEmpty()
-      .withMessage("Le titre ne peut pas être vide!")
+      .withMessage('Le titre ne peut pas être vide!')
       .bail()
       .isLength({ min: 6 })
-      .withMessage("Minimum 6 caractères requis!"),
+      .withMessage('Minimum 6 caractères requis!'),
     check('ingredients')
       .not()
       .isEmpty()
-      .withMessage("Les ingrédients ne peuvent pas être vides!"),
-    check('type')
-      .not()
-      .isEmpty()
-      .withMessage("Le type ne peut pas être vide!"),
+      .withMessage('Les ingrédients ne peuvent pas être vides!'),
+    check('type').not().isEmpty().withMessage('Le type ne peut pas être vide!'),
   ];
 };
 
 // Validation pour la mise à jour d'une recette
 const validateUpdateRecipe = () => {
   return [
-    param('id')
-      .not()
-      .isEmpty()
-      .withMessage("L'ID est requis!"),
+    param('id').not().isEmpty().withMessage('L\'ID est requis!'),
     check('titre')
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .isLength({ min: 6 })
-      .withMessage("Minimum 6 caractères requis pour le titre!"),
+      .withMessage('Minimum 6 caractères requis pour le titre!'),
     check('ingredients')
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .not()
       .isEmpty()
-      .withMessage("Les ingrédients ne peuvent pas être vides!"),
+      .withMessage('Les ingrédients ne peuvent pas être vides!'),
     check('type')
       .optional() // Rendre ce champ facultatif pour la mise à jour
       .not()
       .isEmpty()
-      .withMessage("Le type ne peut pas être vide!"),
+      .withMessage('Le type ne peut pas être vide!'),
   ];
 };
 
@@ -51,7 +45,7 @@ const validateDeleteRecipe = () => {
     param('id')
       .not()
       .isEmpty()
-      .withMessage("L'ID est requis pour supprimer une recette!"),
+      .withMessage('L\'ID est requis pour supprimer une recette!'),
   ];
 };
 
@@ -64,10 +58,23 @@ const validate = (req, res, next) => {
   next();
 };
 
+// Validation pour récupérer une recette par ID
+const validateRecipeId = () => {
+  return [
+    param('id')
+      .not()
+      .isEmpty()
+      .withMessage('L\'ID est requis pour récupérer une recette!')
+      .isInt()
+      .withMessage('L\'ID doit être un nombre entier!'),
+  ];
+};
+
 // Exportation des fonctions
 export default {
   validateCreateRecipe,
   validateUpdateRecipe,
   validateDeleteRecipe,
-  validate
+  validate,
+  validateRecipeId,
 };

@@ -46,7 +46,7 @@
 
 //     const updatedData = { titre: "crepe updated", ingredients: "farine et sucre", type: "dessert" };
 //     await Recipe.updateRecipe(createdRecipe.id, updatedData);
-    
+
 //     const updatedRecipe = await Recipe.getRecipeById(createdRecipe.id);
 //     expect(updatedRecipe.titre).toBe(updatedData.titre);
 //   });
@@ -61,7 +61,7 @@
 //   });
 
 //   it("returns null when trying to delete a non-existent recipe", async () => {
-//     const result = await Recipe.deleteRecipe(9999); 
+//     const result = await Recipe.deleteRecipe(9999);
 //     expect(result).toBeNull();
 //   });
 // });

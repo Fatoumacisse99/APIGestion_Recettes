@@ -1,6 +1,7 @@
 # API de Gestion des Recettes
 
 ## Description
+
 Cette API permet de gérer les recettes dans une application de gestion de recettes. Elle permet de créer, lire, mettre à jour et supprimer des recettes.
 
 ## Endpoints
@@ -10,26 +11,28 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
 - **GET /api/recettes**
   - Récupère toutes les recettes.
   - **Réponse** : Un tableau d'objets de recettes.
-  
 - **GET /api/recettes/:id**
+
   - Récupère une recette par ID.
   - **Paramètres** :
     - `id` : L'ID de la recette à récupérer.
   - **Réponse** : Un objet représentant la recette.
 
 - **POST /api/recettes**
+
   - Crée une nouvelle recette.
   - **Corps de la requête (Body)** :
     ```json
     {
       "name": "String",
       "instructions": "String",
-       "user_id" : "Int",
+      "user_id": "Int"
     }
     ```
   - **Réponse** : Un objet représentant la recette créée, incluant l'ID généré.
 
 - **PUT /api/recettes/:id**
+
   - Met à jour une recette existante.
   - **Paramètres** :
     - `id` : L'ID de la recette à mettre à jour.
@@ -38,7 +41,7 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
     {
       "nom": "String",
       "instructions": "String",
-      "user_id" : "Int",
+      "user_id": "Int"
     }
     ```
   - **Réponse** : Un objet représentant la recette mise à jour.
@@ -57,10 +60,13 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
    ```
    ```
    cd APIGestion_Recettes
-   ````
+   ```
    ```bash
    npm install
-   
+
+   ```
+
 ## Autheur
-[Fatima cissé](https://github.com/Fatoumacisse99) 
- et [Abdarahmane Demba](https://github.com/Abdarahmane)
+
+[Fatima cissé](https://github.com/Fatoumacisse99)
+et [Abdarahmane Demba](https://github.com/Abdarahmane)
