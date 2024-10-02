@@ -1,40 +1,25 @@
-/* eslint-disable */
-
 import RecipeModel from "../src/models/Recipe.js";
 import db from "../src/config/db.js";
 
 describe("Recipe Model with Real Database", () => {
-  beforeAll(async () => {
-    try {
-      const connection = await db.getConnection();
-      console.log("Connected to the database");
-      connection.release();
-    } catch (error) {
-      console.error("Database connection failed", error);
-      throw error;
-    }
-  });
-
-  afterAll(async () => {
-    await db.end();
-  });
-
   beforeEach(async () => {
-    await db.query("DELETE FROM recipes");
+    
+    await db.query("DELETE FROM recettes");
   });
 
-  it("should create a new recipe", async () => {
+  
+  it("01 - should create a new recipe", async () => {
     const uniqueTitle = "New Recipe " + Date.now();
     const newRecipe = {
-      titre: uniqueTitle,
+      titre: uniqueTitle,          
       ingredients: "Some ingredients",
-      type: "Main",
+      type: "Main",               
     };
     const result = await RecipeModel.createRecipe(newRecipe);
-    expect(result.id).toBeDefined();
+    expect(result.id).toBeDefined(); 
   });
 
-  it("should retrieve a recipe by ID", async () => {
+  it("02 - should retrieve a recipe by ID", async () => {
     const uniqueTitle = "Retrieve Me " + Date.now();
     const newRecipe = {
       titre: uniqueTitle,
@@ -47,7 +32,7 @@ describe("Recipe Model with Real Database", () => {
     expect(recipe.id).toBe(createdRecipe.id);
   });
 
-  it("should update a recipe", async () => {
+  it("03 - should update a recipe", async () => {
     const uniqueTitle = "Recipe to Update " + Date.now();
     const createdRecipe = await RecipeModel.createRecipe({
       titre: uniqueTitle,
@@ -69,7 +54,7 @@ describe("Recipe Model with Real Database", () => {
     expect(updatedRecipe.id).toBe(createdRecipe.id);
   });
 
-  it("should retrieve a recipe by title", async () => {
+  it("04 - should retrieve a recipe by title", async () => {
     const uniqueTitle = "Test Recipe " + Date.now();
     const newRecipe = {
       titre: uniqueTitle,
@@ -83,13 +68,24 @@ describe("Recipe Model with Real Database", () => {
     expect(recipe.titre).toBe(uniqueTitle);
   });
 
-  it("should return null for a non-existent recipe by title", async () => {
+  it("05 - should return null for a non-existent recipe by title", async () => {
     const recipe = await RecipeModel.getRecipeByTitle("Non-existent Title");
     expect(recipe).toBeNull();
   });
 
-  it("test delete", async () => {
-    const recipe = await RecipeModel.deleteRecipe(1);
-    expect(recipe).not.toBeNull();
+  it("06 - should delete a recipe", async () => {
+    const newRecipe = {
+      titre: "Recipe to Delete",
+      ingredients: "Ingredients",
+      type: "Main",
+    };
+    const createdRecipe = await RecipeModel.createRecipe(newRecipe);
+
+    const deletedRecipe = await RecipeModel.deleteRecipe(createdRecipe.id);
+    expect(deletedRecipe).not.toBeNull();
+
+    // Vérifiez que la recette n'existe plus après la suppression
+    const recipeAfterDelete = await RecipeModel.getRecipeById(createdRecipe.id);
+    expect(recipeAfterDelete).toBeNull();
   });
 });

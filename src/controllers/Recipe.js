@@ -1,3 +1,4 @@
+
 import RecipeModel from "../models/Recipe.js";
 
 const validateRecipeFields = (fields) => {
@@ -30,7 +31,7 @@ const validateRecipeFields = (fields) => {
 };
 
 export const createRecipe = async (req, res) => {
-  const { titre, ingredients, instructions, type } = req.body;
+  const { titre } = req.body; 
 
   const errors = validateRecipeFields(req.body);
   if (errors.length > 0) {
@@ -40,9 +41,7 @@ export const createRecipe = async (req, res) => {
   try {
     const existingRecipe = await RecipeModel.getRecipeByTitle(titre);
     if (existingRecipe) {
-      return res
-        .status(400)
-        .json({ message: "Une recette avec ce titre existe déjà." });
+      return res.status(400).json({ message: "Une recette avec ce titre existe déjà." });
     }
 
     const newRecipe = await RecipeModel.createRecipe(req.body);
@@ -100,7 +99,7 @@ export const deleteRecipe = async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ message: "Recette non trouvée." });
     }
-    return res.status(204).send();
+    return res.status(200).json({ message: "Recette supprimée avec succès." });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
