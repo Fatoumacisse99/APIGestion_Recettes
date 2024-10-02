@@ -10,7 +10,7 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
 
 ### Recettes
 
-- **GET /api/recipes**
+- **GET /api/recettes**
   - Récupère toutes les recettes.
   - **Exemple de réponse** :
     ```json
@@ -24,13 +24,13 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
     ]
     ```
 
-- **GET /api/recipes/:id**
+- **GET /api/recettes/:id**
   - Récupère une recette par ID.
   - **Paramètre** :
     - `id` : L'ID de la recette à récupérer.
   - **Exemple de requête** :
     ```bash
-    GET /api/recipes/1
+    GET /api/recettes/1
     ```
   - **Exemple de réponse** :
     ```json
@@ -42,11 +42,11 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
     }
     ```
 
-- **POST /api/recipes**
+- **POST /api/recettes**
   - Crée une nouvelle recette.
   - **Exemple de requête** :
     ```bash
-    POST /api/recipes
+    POST /api/recettes
     Content-Type: application/json
     ```
   - **Corps de la requête (Body)** :
@@ -67,13 +67,13 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
     }
     ```
 
-- **PUT /api/recipes/:id**
+- **PUT /api/recettes/:id**
   - Met à jour une recette existante.
   - **Paramètre** :
     - `id` : L'ID de la recette à mettre à jour.
   - **Exemple de requête** :
     ```bash
-    PUT /api/recipes/1
+    PUT /api/recettes/1
     Content-Type: application/json
     ```
   - **Corps de la requête (Body)** :
@@ -94,13 +94,13 @@ Cette API permet de gérer les recettes dans une application de gestion de recet
     }
     ```
 
-- **DELETE /api/recipes/:id**
+- **DELETE /api/recettes/:id**
   - Supprime une recette par ID.
   - **Paramètre** :
     - `id` : L'ID de la recette à supprimer.
   - **Exemple de requête** :
     ```bash
-    DELETE /api/recipes/1
+    DELETE /api/recettes/1
     ```
   - **Exemple de réponse** :
     ```json
@@ -185,17 +185,13 @@ docker build -t recette-api .
 ```
 Tester l'Image Localement : Après avoir construit l'image, vous pouvez la tester localement en exécutant la commande suivante :
    ```bash
-   docker run -p 3010:3010 recette-api
+   docker run -p 3000:3000 recette-api
    ```
-   Cela exposera votre API sur le port 3010
+   Cela exposera votre API sur le port 3000
 
 * Lancer le Conteneur avec Docker Compose : Pour lancer le conteneur en utilisant docker-compose, exécutez cette commande :
   ```bash
   docker-compose up --build
   ```
-4. Accéder à l'API
-
-Une fois que le conteneur est en cours d'exécution, vous pouvez accéder à l'API à l'adresse suivante :
-
-
-http://localhost:3010/recettes
+## Auteur
+  [Abdarahmane Ibrahima Demba](https://github.com/Abdarahmane)
